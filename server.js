@@ -2,12 +2,15 @@ const express = require("express");
 const axios = require("axios");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const geohash = require("ngeohash");
 
 const PORT = 8080 || process.env.PORT;
 const app=  express();
 
 app.use(bodyParser.json());
 app.use(cors());
+
+const API_KEY='CcjeWAmoKRWnQKHlkdFCOsoJTXvZedLe';
 
 let segmentDict = {
     'music': 'KZFzniwnSyZfZ7v7nJ',
@@ -120,6 +123,7 @@ app.get('/ticketmaster_eventsearch', (req, res) => {
             eventsJSONArray ['data'][0] = error;
         })
         .finally(()=> {
+            console.log(eventsJSONArray);
             res.send(eventsJSONArray)});
             
         })

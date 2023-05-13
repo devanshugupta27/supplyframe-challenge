@@ -1,39 +1,60 @@
 <html>
     <head>
-        <script src="js/app.js" type="text/javascript" defer ></script>
+        <script src="js/script.js" type="text/javascript" defer ></script>
         <link rel="stylesheet" type="text/css" href="css/styles.css" >
     </head>
     <body>
-        
-        <form id="eventForm">
-            <p>Keyword</p> 
-            <input type="text" name="keyword" required>
-            <br>
-            <label id="formLabel" for="distance">
-                <span> Distance (in miles) </span>
-                <input id="distance" type="number" placeholder="10"  name="distance" value=10>
+        <div id="event-search">
+            <form id="eventForm" onsubmit="handleClick(); return false;">
+                <p>Keyword</p> 
+                <input type="text" name="keyword" required>
+                <br>
+                <label id="formLabel" for="distance">
+                    <span> Distance (in miles) </span>
+                    <input id="distance" type="number" placeholder="10"  name="distance" value=10>
+                    </label>
+                <label id="formLabel" for="category">
+                    <span id="categoryLabel">Category</span>
+                    <select id="category-dropdown" name="category">
+                    <option id="dropdown-list-item" value="Default" selected>Default</option>
+                    <option value="Music">Music</option> 
+                    <option value="Sports">Sports</option> 
+                    <option value="Arts_Theatre">Arts & Theatre</option> 
+                    <option value="Film">Film</option> 
+                    <option value="Miscellaneous">Miscellaneous</option> 
+                </select>
                 </label>
-            <label id="formLabel" for="category">
-                <span id="categoryLabel">Category</span>
-                <select id="category-dropdown" name="category">
-                <option id="dropdown-list-item" value="Default" selected>Default</option>
-                <option value="Music">Music</option> 
-                <option value="Sports">Sports</option> 
-                <option value="Arts_Theatre">Arts & Theatre</option> 
-                <option value="Film">Film</option> 
-                <option value="Miscellaneous">Miscellaneous</option> 
-            </select>
-            </label>
-            <br>
-            <br>
+                <br>
+                <br>
+                
+                <p> Location</p>
+                <input type="checkbox" id="location-checkbox" unchecked> 
+                <p id="autoDetectText">Auto-Detect Location</p>
+                <input type="text" id= "locationInput" required name="location">    
+                
+                <button id="search-btn" type="submit">SEARCH</button>
+                <button id="clear-btn" type="reset">CLEAR</button>
+            </form>    
+        </div>
+
+        <div id="error-search">
+        </div>
+
+        <div id="valid-search">
+            <table id="events-table"></table>
+        
+        <div id="event-card">
+            <p id="facebook_ads_example"></p>
+        </div>
+        
+        
+        <div id="showVenueDetails">
+            <div id="venueDetailMessage">Show Venue Details</div>
+            <i id="arrow-down"></i>
             
-            <p> Location</p>
-            <input type="checkbox" id="location-checkbox" unchecked> 
-            <p id="autoDetectText">Auto-Detect Location</p>
-            <input type="text" id= "locationInput" required name="location">    
-            
-            <button id="search-btn" type="submit">SEARCH</button>
-            <button id="clear-btn" type="reset">CLEAR</button>
-        </form>
+        </div>
+        <div id="venue-card">
+        </div>
+
     </body>
 </html>
