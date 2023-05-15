@@ -3,12 +3,19 @@ const axios = require("axios");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const geohash = require("ngeohash");
+const ejs = require("ejs");
+const path = require('path');
 
 const PORT = 8080 || process.env.PORT;
 const app=  express();
 
 app.use(bodyParser.json());
 app.use(cors());
+
+// Setup ejs engine and views location
+app.set('view engine', 'ejs')
+app.use(express.static('app'));
+
 
 const API_KEY='CcjeWAmoKRWnQKHlkdFCOsoJTXvZedLe';
 
@@ -22,12 +29,10 @@ let segmentDict = {
 }
 
 app.get('/', (req, res) => {
-    res.send("Hello from server!");
+    res.render("pages/index");
 });
 
 app.get('/ticketmaster_eventsearch', (req, res) => {
-
-    console.log(req.query);
     
     let lat = req.query.lat;
     let long = req.query.long;
@@ -41,8 +46,7 @@ app.get('/ticketmaster_eventsearch', (req, res) => {
 
     let eventsJSONArray = {"data":[]};
     
-    let url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${API_KEY}&keyword=${keyword}&segmentId=${segmentId}&radius=${distance}&unit=miles&geoPoint=${hash}`
-    
+    let url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${API_KEY}&keyword=${keyword}&segmentId=${segmentId}&radius=${distance}&unit=miles&geoPoint=${hash}&size=50`
     axios.get(url)
         .then((response) => {
             let resultDict = response.data;
@@ -50,7 +54,7 @@ app.get('/ticketmaster_eventsearch', (req, res) => {
             if (resultDict.hasOwnProperty("_embedded")) {
                 if (resultDict["_embedded"].hasOwnProperty("events")) {
                     if (resultDict["_embedded"]['events'].length > 0) {
-                        let eventsLen = Math.min(20, resultDict["_embedded"]['events'].length);
+                        let eventsLen = Math.min(22, resultDict["_embedded"]['events'].length);
 
                         for (let eventIndex = 0; eventIndex < eventsLen; eventIndex++) {
                             let eventJSON = {
@@ -123,7 +127,6 @@ app.get('/ticketmaster_eventsearch', (req, res) => {
             eventsJSONArray ['data'][0] = error;
         })
         .finally(()=> {
-            console.log(eventsJSONArray);
             res.send(eventsJSONArray)});
             
         })
@@ -145,7 +148,7 @@ app.get('/ticketmaster_eventdetails', (req, res) => {
                 eventJSON["data"]['name'] = resultDict['name'];
             }
             //date and time
-            if (resultDict.haiosOwnProperty("dates")) {
+            if (resultDict.hasOwnProperty("dates")) {
                  if (resultDict['dates'].hasOwnProperty("start")) {
                     if (resultDict['dates']['start'].hasOwnProperty("localDate")) {
                         eventJSON["data"]['date'] = resultDict['dates']['start']['localDate'];
