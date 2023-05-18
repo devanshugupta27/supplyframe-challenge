@@ -18,15 +18,13 @@ body {
 }
 
 #event-search {
-    margin-top: 150px;
     background-color: rgba(255, 255, 255, 0.1);
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(15px);
-    width: 40%;
-    height: 375px;
+    
     margin-left: 30%;
     margin-right: 30%;
-    border-radius: 25px;
+    border-radius: 20px;
 }
 .formLabels {
     /* display: block; */
@@ -427,4 +425,35 @@ th {
     position: absolute;
     margin-top: -25px;
     margin-left: 240px;
+}
+
+#supplyframe-logo {
+    height: 50px;
+    width: 50px;
+    float: left;
+    margin-left: 20px;
+    margin-right: 5%;
+}
+
+#company-name {
+    margin-top: 8%;
+    color: white;
+    text-decoration: none;
+}
+a:visited {
+    text-decoration: none;
+}
+
+#nav-group{
+    display: flex;
+}
+
+.nav-items {
+    color: white;
+    margin-right: 20px;
+}
+
+.nav-items > a {
+    text-decoration: none;
+    color: white;
 }

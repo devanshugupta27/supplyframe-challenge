@@ -14,10 +14,6 @@ const nextBtn = document.getElementById("nextBtn");
 
 let eventTableResponse;
 let currStartingIndex = 0;
-$(document).ready(function () {
-    // $('#events-table').DataTable();
-    $('#dummy-table').DataTable();
-});
 
 window.onload = function(){
     // eventsTable.style.display = "none";
@@ -422,7 +418,10 @@ function eventCardCreation (eventId) {
             var h2 = document.createElement("H2");
             h2.setAttribute("id", "eventTitle");
             h2.appendChild(title);
-            eventCardDiv.appendChild(h2);            
+            eventCardDiv.appendChild(h2);      
+            var heart_icon = document.createElement("i");
+            heart_icon.setAttribute("class", "bi bi-heart");
+            eventCardDiv.appendChild(heart_icon);      
         }
         
         //this div is for the event details displayed on the left

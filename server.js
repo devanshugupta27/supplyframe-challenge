@@ -14,7 +14,7 @@ app.use(cors());
 
 // Setup ejs engine and views location
 app.set('view engine', 'ejs')
-app.use(express.static('app'));
+app.use(express.static('public'));
 
 
 const API_KEY='CcjeWAmoKRWnQKHlkdFCOsoJTXvZedLe';
@@ -30,6 +30,14 @@ let segmentDict = {
 
 app.get('/', (req, res) => {
     res.render("pages/index");
+});
+
+app.get('/search', (req, res) => {
+    res.render("pages/search");
+});
+
+app.get('/favorites', (req, res) => {
+    res.render("pages/favorites");
 });
 
 app.get('/ticketmaster_eventsearch', (req, res) => {
