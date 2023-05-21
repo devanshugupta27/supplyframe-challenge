@@ -456,3 +456,21 @@ a:visited {
     text-decoration: none;
     color: white;
 }
+
+#favoriteIconEmpty {
+    margin-bottom: 30px;
+    margin-top: 33px;
+    margin-left : 15px;
+}
+#favoriteIconFilled {
+    margin-bottom: 30px;
+    margin-top: 33px;
+    margin-left : 15px;
+}
+
+#emptyFavList {
+    background-color: white;
+    height: 25px;
+    margin-top: 50px;
+    border-radius: 5px;
+}

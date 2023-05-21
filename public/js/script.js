@@ -11,25 +11,31 @@ const venueCardResult = document.getElementById("venue-card");
 const clearBtn = document.getElementById("clear-btn");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
+const heartIconEmpty = document.getElementById("favoriteIconEmpty");
+const heartIconFilled = document.getElementById("favoriteIconFilled");
+const nonEmptyFavListDiv = document.getElementById("nonEmptyFavList");
+const emptyFavListDiv = document.getElementById("emptyFavList");
+const favRemoveTrash = document.getElementById("trashIcon");
 
 let eventTableResponse;
 let currStartingIndex = 0;
 
-window.onload = function(){
-    // eventsTable.style.display = "none";
-    errorSearchResult.style.display = "none";
-    validSearchResult.style.display = "none";
-    eventCardResult.style.display = "none";
-    showVenueDetails.style.display = "none";
-    venueCardResult.style.display = "none";
-
-    var button = document.querySelector('#search-btn');
-    const locationCheckBox = document.getElementById('location-checkbox');
+function searchPageHandler() {
+        // eventsTable.style.display = "none";
+        errorSearchResult.style.display = "none";
+        validSearchResult.style.display = "none";
+        eventCardResult.style.display = "none";
+        showVenueDetails.style.display = "none";
+        venueCardResult.style.display = "none";
     
-    // button.addEventListener('click', handleClick);
-    clearBtn.addEventListener('click', clearBtnHandle);
-    locationCheckBox.addEventListener('change', locationToggle);
-}
+        var button = document.querySelector('#search-btn');
+        const locationCheckBox = document.getElementById('location-checkbox');
+        
+        // button.addEventListener('click', handleClick);
+        clearBtn.addEventListener('click', clearBtnHandle);
+        locationCheckBox.addEventListener('change', locationToggle);
+    
+    }
 
 function clearBtnHandle() {
 
@@ -409,10 +415,16 @@ function eventCardCreation (eventId) {
         console.log(data);
 
         let venue;
+        let genresValue = "";
 
         if (data.hasOwnProperty("name")) {            
             let h2 = document.getElementById("eventTitle");
             h2.innerHTML = data["name"];
+        }
+
+        if (data["eventId"] in localStorage) {
+            heartIconEmpty.style.display = "none";
+            heartIconFilled.style.display = "block";    
         }
         
         //this div is for the event details displayed on the left
@@ -521,20 +533,18 @@ function eventCardCreation (eventId) {
         }
 
         //Genre
-        if (data.hasOwnProperty("genre")) {
+        if (data.hasOwnProperty("genres")) {
 
             let genreDiv = document.createElement("div");
             let genreField = document.createTextNode("Genres");
             genreDiv.setAttribute("class", "eventCardFields");
             genreDiv.appendChild(genreField);
 
-            let genresValue = "";
-
-            for (let i = 0; i < data["genre"].length; i++) {
-                console.log(data["genre"][i]);
-                genresValue = genresValue + data["genre"][i];
+            for (let i = 0; i < data["genres"].length; i++) {
+                console.log(data["genres"][i]);
+                genresValue = genresValue + data["genres"][i];
                 
-                if (i < data["genre"].length - 1) {
+                if (i < data["genres"].length - 1) {
                     genresValue = genresValue + " | ";
                 }
             }
@@ -683,7 +693,33 @@ function eventCardCreation (eventId) {
             venueCardResult.scrollIntoView();
             venueCardCreation(venue);
         }
+
+        heartIconEmpty.onclick = function(e) {
+            
+            alert(`Adding ${data["name"]} event to favorites`);
+            heartIconEmpty.style.display = "none";
+            heartIconFilled.style.display = "block";
+    
+            localStorage.setItem(data["eventId"], JSON.stringify({
+                date: data["date"],
+                name: data["name"],
+                venue: data["venue"],
+                genre: genresValue,
+                eventId: data["eventId"]
+            }))
+        }
+    
+        heartIconFilled.onclick = function(e) {
+            e.preventDefault();
+            alert(`"Removing ${data["name"]} event from favorites"`);
+            heartIconFilled.style.display = "none";
+            heartIconEmpty.style.display = "block";
+            localStorage.removeItem(data["eventId"]);
+    
+        }
     })
+
+
 
 }
 
@@ -822,4 +858,60 @@ function venueCardCreation (venue) {
         }
         
     })
+}
+
+function favPageHandler() {
+    if (localStorage.length == 0) {
+        emptyFavListDiv.style.display = "block";
+        nonEmptyFavListDiv.style.display = "none";
+    }
+    else if (localStorage.length > 0) {
+        emptyFavListDiv.style.display = "none";
+        nonEmptyFavListDiv.style.display = "block";
+
+        let keys = Object.keys(localStorage);
+
+        console.log(keys);
+
+		let favTable = document.getElementById("favTable");
+
+		for (let eventIdIndex = 0; eventIdIndex < keys.length; eventIdIndex++){
+			
+            let itemEntry = JSON.parse(localStorage.getItem(keys[eventIdIndex]));
+            console.log(itemEntry);
+            let newRow = favTable.insertRow(-1);
+
+            //index
+            let indexCell = newRow.insertCell(0);
+            let indexCellText = document.createTextNode(eventIdIndex + 1);
+            indexCell.appendChild(indexCellText);
+
+            //date
+            let dateCell = newRow.insertCell(1);
+            let dateCellText = document.createTextNode(itemEntry["date"]);
+            dateCell.appendChild(dateCellText);
+
+            //name
+            let nameCell = newRow.insertCell(2);
+            let nameCellText = document.createTextNode(itemEntry["name"]);
+            nameCell.appendChild(nameCellText);
+
+            //genre
+            let categoryCell = newRow.insertCell(3);
+            let categoryCellText = document.createTextNode(itemEntry["genre"]);
+            categoryCell.appendChild(categoryCellText);
+
+            //venue
+            let venueCell = newRow.insertCell(4);
+            let venueCellText = document.createTextNode(itemEntry["venue"]);
+            venueCell.appendChild(venueCellText);
+		}
+    }
+}
+
+function emptyFavList() {
+
+    alert("Removing all favorites!");
+    localStorage.clear();
+    favPageHandler();
 }
