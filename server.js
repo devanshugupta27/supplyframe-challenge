@@ -385,6 +385,28 @@ app.get('/ticketmaster_venuedetails', (req, res) =>{
                                     }
                                 }
 
+                                // if "url" in resultDict["_embedded"]["venues"][0]:
+                                // venueJSONArray["url"] = resultDict["_embedded"]["venues"][0]["url"]
+        
+
+                                if (resultDict["_embedded"]["venues"][venueIndex].hasOwnProperty("url")){
+                                    venueJSON["data"]["url"] = resultDict["_embedded"]["venues"][venueIndex]["url"];
+                                }
+        
+                                if (resultDict["_embedded"]["venues"][venueIndex].hasOwnProperty("images")){
+                                    if (resultDict["_embedded"]["venues"][venueIndex]["images"].length > 0) {
+                                        if (resultDict["_embedded"]["venues"][venueIndex]["images"][0].hasOwnProperty("url")) {
+                                            venueJSON["data"]["logo"] = resultDict["_embedded"]["venues"][venueIndex]["images"][0]["url"];
+                                        }
+                                    }
+
+                                    if (resultDict["_embedded"]["venues"][venueIndex]["generalInfo"].hasOwnProperty("generalRule")){
+                                        venueJSON["data"]["generalRule"] = resultDict["_embedded"]["venues"][venueIndex]["generalInfo"]["generalRule"];
+                                    }
+                                    if (resultDict["_embedded"]["venues"][venueIndex]["generalInfo"].hasOwnProperty("childRule")){
+                                        venueJSON["data"]["childRule"] = resultDict["_embedded"]["venues"][venueIndex]["generalInfo"]["childRule"];
+                                    }
+                                }
                             }
                         }
                     }
@@ -403,3 +425,5 @@ app.get('/ticketmaster_venuedetails', (req, res) =>{
 app.listen(PORT, ()=> {
     console.log(`Listening on port ${PORT}`);
 })
+
+module.exports = app;

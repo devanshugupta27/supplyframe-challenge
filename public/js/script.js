@@ -409,24 +409,15 @@ function eventCardCreation (eventId) {
         console.log(data);
 
         let venue;
-        //this div is for the whole card
-        let eventCardDiv = document.getElementById("event-card");
 
-        if (data.hasOwnProperty("name")) {
-            let title = document.createTextNode(data["name"]);
-            
-            var h2 = document.createElement("H2");
-            h2.setAttribute("id", "eventTitle");
-            h2.appendChild(title);
-            eventCardDiv.appendChild(h2);      
-            var heart_icon = document.createElement("i");
-            heart_icon.setAttribute("class", "bi bi-heart");
-            eventCardDiv.appendChild(heart_icon);      
+        if (data.hasOwnProperty("name")) {            
+            let h2 = document.getElementById("eventTitle");
+            h2.innerHTML = data["name"];
         }
         
         //this div is for the event details displayed on the left
-        let eventDetailsDiv = document.createElement("div");
-        eventDetailsDiv.setAttribute("id", "eventDetails");
+        let eventDetailsDiv = document.getElementById("eventDetails");
+        let eventSeatMapDiv = document.getElementById("seatmapImage");
 
         //Date
         if (data.hasOwnProperty("date")) {
@@ -661,17 +652,24 @@ function eventCardCreation (eventId) {
 
         //seatmap
         if (data.hasOwnProperty("seatmap")) {
-
-            let image = document.createElement('img');
-            image.style = "max-height:650px; max-width:650px;";
-            image.id = "seatmap";
-            image.src = data["seatmap"];
-            
-            eventCardDiv.appendChild(image);
+            var request = new XMLHttpRequest();
+            request.open("GET", data["seatmap"], true);
+            request.send();
+            request.onload = function() {
+                if (request.status == 200) 
+                {
+                    let image = document.createElement('img');
+                    // image.style = "max-height:650px; max-width:650px;";
+                    image.id = "seatmap";
+                    image.setAttribute("class", "img-fluid");
+                    image.src = data["seatmap"];
+                    eventSeatMapDiv.appendChild(image);    
+                    
+    
+                }
+            }
         }
-
-
-        eventCardDiv.append(eventDetailsDiv);
+        
         if (venueCardResult.style.display = "block") {
             venueCardResult.style.display = "none";
             venueCardResult.innerHTML = "";
@@ -700,7 +698,7 @@ function venueCardCreation (venue) {
     }).then((response) => {
         return response.json();
     }).then((data) => {  
-        
+        data = data['data'];
         venueCardResult.innerHTML = "";
         if (venueCardResult.style.display == "none"){
             venueCardResult.style.display = "block";
@@ -712,7 +710,6 @@ function venueCardCreation (venue) {
         let addressDiv = document.createElement("div");
         
         addressDiv.setAttribute("class", "addressBlock");
-
         if (data.hasOwnProperty("name")) {
             let title = document.createTextNode(data["name"]);
             fullAddress += data["name"];
@@ -726,12 +723,14 @@ function venueCardCreation (venue) {
         let verticalLine = document.createElement("div");
         verticalLine.setAttribute("class", "vl");
 
+
         if (data.hasOwnProperty("logo")) {
 
             let image = document.createElement('img');
             image.id = "venueLogo";
             image.src = data["logo"];
             venueCardDiv.appendChild(image);
+
         }
 
         if (data.hasOwnProperty("address")) {
@@ -754,25 +753,16 @@ function venueCardCreation (venue) {
             
         }
 
-        if (data.hasOwnProperty("city")){
+        if (data.hasOwnProperty("location")){
             
-            let city = data["city"];
-            fullAddress = fullAddress + " " + city;
+            let location = data["location"];
+            fullAddress = fullAddress + " " + location;
             let br = document.createElement("br");
-            let cityValue = document.createTextNode(city);
+            let locationValue = document.createTextNode(location);
 
             line1addDiv.appendChild(br);
-            line1addDiv.appendChild(cityValue);
+            line1addDiv.appendChild(locationValue);
             
-        }
-
-        if (data.hasOwnProperty("state")){
-            
-            let state = ", " + data["state"];
-
-            fullAddress = fullAddress + " " + state;
-            let stateValue = document.createTextNode(state);
-            line1addDiv.appendChild(stateValue);
         }
 
         if (data.hasOwnProperty("postalCode")){
@@ -787,13 +777,11 @@ function venueCardCreation (venue) {
             line1addDiv.appendChild(postalCodeValue);
         }
             addressDiv.appendChild(line1addDiv);
-            
             venueCardDiv.appendChild(addressDiv);
         
             let gmapsLinkURL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`
 
             let mapsLinkDiv = document.createElement("div");
-            // mapsLinkDiv.setAttribute("class", "addressBlock");
             mapsLinkDiv.id = "mapsLink";
             let gMapsLink = document.createElement("a");
             gMapsLink.setAttribute("class", "mapsURL");
@@ -814,14 +802,13 @@ function venueCardCreation (venue) {
             verticalLine.style = "height: 210px;"
         }
         venueCardDiv.append(verticalLine);
-
         if (data.hasOwnProperty("url")) {
 
             let moreEventsURL = data["url"];
 
             let moreEventsLinkDiv = document.createElement("div");
             
-            moreEventsLinkDiv.id = "moreEventsLink";
+            moreEventsLinkDiv.id = "moreEventsLink";            
             let moreEventLink = document.createElement("a");
             moreEventLink.setAttribute("class", "moreEventsURL");
             moreEventLink.setAttribute("href", moreEventsURL);
@@ -831,7 +818,7 @@ function venueCardCreation (venue) {
             
             moreEventsLinkDiv.append(moreEventLink);
             venueCardDiv.appendChild(moreEventsLinkDiv);
-
+            
         }
         
     })
