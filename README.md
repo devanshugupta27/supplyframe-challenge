@@ -1,6 +1,6 @@
 # Supplyframe Full Stack Engineer Internship Challenge
 
-**_Note: This app has been built keeping using Google Chrome Browser. Each browser can render elements differently. Please launch the app in Google Chrome for best experience._**
+**_Note: This app has been built and tested using Google Chrome Browser. Each browser can render elements differently. Please launch the app in Google Chrome for best experience._**
 
 ## Installation
 
