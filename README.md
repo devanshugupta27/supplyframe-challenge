@@ -11,6 +11,8 @@
 For the next part, please enter the following command once installation is complete,
 <code> npm start</code>
 
+Navigate to Google Chrome and launch http://localhost:8080
+
 ## Usage
 
 Hello everyone,
@@ -48,8 +50,10 @@ To view favorites, please navigate to the Favorites Page of the app (<code>/favo
 
 ## Test
 
-A couple of Backend Test has been specified for our app. To start the tests, please provide the following command inside root folder to Terminal:
+A couple of Backend Test has been defined in the tests folder. To start the tests, please run the following command inside root folder to Terminal:
 
 <code> npm test</code>
+
+# Thank You!
 
 Thank you! I hope you liked the app.
