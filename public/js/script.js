@@ -54,9 +54,8 @@ function clearBtnHandle() {
     }
     if (showVenueDetails.style.display == "block") {
         showVenueDetails.style.display = "none";
-        
     }
-    console.log("printing state of venue card" + venueCardResult.style.display);
+    
     if (venueCardResult.style.display == "block") {
         console.log("inside if statement");
         venueCardResult.style.display = "none";
@@ -64,6 +63,16 @@ function clearBtnHandle() {
 
     if (errorSearchResult.style.display == "block") {
         errorSearchResult.innerHTML = "";
+    }
+
+    if (prevBtn.style.display == "block") {
+        prevBtn.style.display = "none";
+    }
+    if (nextBtn.style.display == "block") {
+        nextBtn.style.display = "none";
+    }
+    if (locationField.disabled == true) {
+        locationField.disabled = false;
     }
 }
 
@@ -113,7 +122,7 @@ function handleClick(){
             let long = locations[1];
 
             //making call to backend
-            fetch(`http://localhost:8080/ticketmaster_eventsearch?lat=${lat}&long=${long}&keyword=${keywordValue}&category=${categoryValue}&distance=${distanceValue}`, {
+            fetch(`/ticketmaster_eventsearch?lat=${lat}&long=${long}&keyword=${keywordValue}&category=${categoryValue}&distance=${distanceValue}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
@@ -149,7 +158,7 @@ function handleClick(){
             long = jsonData.results[0].geometry.location.lng;
             //making call to backend
             // let location = lat +',' + long;
-            fetch(`http://localhost:8080/ticketmaster_eventsearch?lat=${lat}&long=${long}&keyword=${keywordValue}&category=${categoryValue}&distance=${distanceValue}`, {
+            fetch(`/ticketmaster_eventsearch?lat=${lat}&long=${long}&keyword=${keywordValue}&category=${categoryValue}&distance=${distanceValue}`, {
                 method: "GET",
                 "headers": {
                     'accept': 'application/json'
@@ -177,13 +186,12 @@ function locationToggle() {
 
     if (this.checked) {
         console.log("checkbox is checked");
-        locationInput.style.display = "none";
-        locationInput.removeAttribute("required");
+        locationInput.disabled = true;
+        locationInput.value=  "";
     }
     else {
         console.log("checkbox is unchecked");
-        locationInput.style.display = "block";
-
+        locationInput.disabled = false;
     }
 };
 
@@ -201,8 +209,6 @@ function determineDisplayState (show, responseJSON) {
     if (show == "valid") {
         
         generateTableHead();
-        // generateTable(eventsTable, responseJSON['data']);
-        // generateTable("new");
         generateTableRows("new");
         
         
@@ -253,6 +259,11 @@ function generateTableRows(type) {
         //show first 10 rows
         currStartingIndex = 0;
         generateTable(currStartingIndex);
+
+        if (eventTableResponse['data'].length > 10) {
+            prevBtn.style.display = "block";
+            nextBtn.style.display = "block";
+        }
     }
     else if (type == "next") {
         //show next 10 rows & update start index
@@ -289,7 +300,6 @@ function generateTable(index) {
         prevBtn.setAttribute("disabled", "disabled");
     }
 
-    console.log(limit);
     for (let elementIndex = index; elementIndex < limit; elementIndex++) {
         
         let rowData = {};
@@ -335,7 +345,6 @@ function generateTable(index) {
             cell.setAttribute('class', "table-content");
             cell.appendChild(image);
             rowData.icon = icon;
-    
         }
 
         //Name
@@ -403,7 +412,7 @@ function generateTable(index) {
 
 function eventCardCreation (eventId) {
 
-    fetch(`http://localhost:8080/ticketmaster_eventdetails?eventId=${eventId}`, {
+    fetch(`/ticketmaster_eventdetails?eventId=${eventId}`, {
         method: "GET",
         "headers": {
             'accept': 'application/json'
@@ -718,15 +727,15 @@ function eventCardCreation (eventId) {
     
         }
     })
-
-
-
 }
 
 
 function venueCardCreation (venue) {
 
-    fetch(`http://localhost:8080/ticketmaster_venuedetails?venue=${venue}`, {
+    let footer = document.getElementById('footer');
+    footer.style.display = "none";
+
+    fetch(`ticketmaster_venuedetails?venue=${venue}`, {
         method: "GET",
         "headers": {
             'accept': 'application/json'
@@ -741,7 +750,7 @@ function venueCardCreation (venue) {
         }
         //this div is for the whole card
         let venueCardDiv = document.getElementById("venue-card");
-        let line1addDiv;
+        let line1addDiv = document.createElement("div");;
         let fullAddress = "";
         let addressDiv = document.createElement("div");
         
@@ -780,7 +789,7 @@ function venueCardCreation (venue) {
 
             fullAddress = fullAddress + " " + line1Address;
             
-            line1addDiv = document.createElement("div");
+            
             line1addDiv.setAttribute("class", "venueAddressValue");
 
             let line1add = document.createTextNode(`${line1Address} `);

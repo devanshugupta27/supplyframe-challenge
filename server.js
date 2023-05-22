@@ -399,13 +399,17 @@ app.get('/ticketmaster_venuedetails', (req, res) =>{
                                             venueJSON["data"]["logo"] = resultDict["_embedded"]["venues"][venueIndex]["images"][0]["url"];
                                         }
                                     }
+                                    
+                                    if (resultDict["_embedded"]["venues"][venueIndex].hasOwnProperty("generalInfo")){
+                                        if (resultDict["_embedded"]["venues"][venueIndex]["generalInfo"].hasOwnProperty("generalRule")){
+                                            venueJSON["data"]["generalRule"] = resultDict["_embedded"]["venues"][venueIndex]["generalInfo"]["generalRule"];
+                                        }
+                                        if (resultDict["_embedded"]["venues"][venueIndex]["generalInfo"].hasOwnProperty("childRule")){
+                                            venueJSON["data"]["childRule"] = resultDict["_embedded"]["venues"][venueIndex]["generalInfo"]["childRule"];
+                                        }
+    
+                                    }
 
-                                    if (resultDict["_embedded"]["venues"][venueIndex]["generalInfo"].hasOwnProperty("generalRule")){
-                                        venueJSON["data"]["generalRule"] = resultDict["_embedded"]["venues"][venueIndex]["generalInfo"]["generalRule"];
-                                    }
-                                    if (resultDict["_embedded"]["venues"][venueIndex]["generalInfo"].hasOwnProperty("childRule")){
-                                        venueJSON["data"]["childRule"] = resultDict["_embedded"]["venues"][venueIndex]["generalInfo"]["childRule"];
-                                    }
                                 }
                             }
                         }
