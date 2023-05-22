@@ -49,19 +49,18 @@
                         <div class="row">
                             <div class="col-md-12 col-xs-12">
                                 <p class="text-start mx-auto"> Location</p>
-                                <input type="text" class="form-control col-md-12 mx-auto " required name="location">            
+                                <input type="text" class="form-control col-md-12 mx-auto" id = "locationInput" required name="location">            
                             </div>
                         </div>
                                          
-                        
                             <div class="form-check form-check-inline col-md-12 col-xs-12">
                                 <input class="form-check-input" type="checkbox" id="location-checkbox" unchecked> 
                                 <label class="form-check-label" for="location-checkbox">Auto-Detect Location</label> 
                             </div>
-                        
-                        <button id="search-btn" type="submit">SEARCH</button>
-                        <button id="clear-btn" type="reset">CLEAR</button>
-            
+
+                            <button id="search-btn" type="submit">SEARCH</button>
+                            <button id="clear-btn" type="reset">CLEAR</button>  
+                            
                     </form>
                 </div>
             </div>
@@ -72,8 +71,11 @@
 
         <div id="valid-search">
             <table id="events-table"></table>
-            <button id="prevBtn" disabled onclick="generateTableRows('prev')">Previous</button>
-            <button id="nextBtn"onclick="generateTableRows('next')" >Next</button>
+            <div style="display: inline-flex; margin-top: 20px; margin-bottom: 20px;">
+                <button id="prevBtn" style="display: none; margin-right: 20px;" disabled onclick="generateTableRows('prev')">Previous</button>
+                <button id="nextBtn" style="display: none;" onclick="generateTableRows('next')" >Next</button>    
+            </div>
+        </div>
         
         <div class="container">
             <div class="row">
@@ -82,7 +84,7 @@
                         <div class="row">
                             <div class="col-lg-10 col-10">
                                 <p id="facebook_ads_example"></p>
-                                <div style="display: flex;">
+                                <div id="eventTitleDiv" style="display: flex;">
                                     <h2 id="eventTitle"></h2>        
                                     <i class="fa fa-heart-o fa-2xl" id="favoriteIconEmpty" aria-hidden="true" style="color:black" ></i>
                                     <i class="fa-solid fa-heart fa-2xl" id="favoriteIconFilled" style="color: #ff0000; display: none;" onclick="favoriteToggle('remove')"></i>    
@@ -106,21 +108,10 @@
         </div>
         
         <div id="venue-card">
-            <!-- <div class="container">
-                <div id="row">
-                    <div class="col-lg-12 col-12">
-                        <h4 id="venueTitle"></h4>
-                        <img id="venueLogo">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-5 col-5" id="address"></div>
-                <div class="col-lg-1 col-1" id="verticalLine"></div>
-                <div class="col-lg-6 col-6" id="moreEventsLink"></div>
-            </div> -->
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     </body>
 </html>
+
+<%- include('../partials/footer.ejs') %>
