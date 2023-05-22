@@ -25,7 +25,8 @@ Our app helps users to find details about the different events happening around 
 
 1. For starting search, enter the name with which you want to search, choose category (or can be left Default), enter the distance within which radius you want to search the event.
 2. Lastly, we need to provide the location. Location can be provided either as an input or the user can choose to find the event based on his current location. The current location information is fetched using IP INFO API.
-3. After requesting, a list of events will be populated.
+3. After requesting, a list of events will be populated. If the request results in more than 10 entries, only the first 10 will be shown. The user can navigate across the entries using the Previous/Next Button.
+4. If the search does not return any event, an appropriate message will be shown.
 
 ### Event Details
 
@@ -43,7 +44,7 @@ Our app helps users to find details about the different events happening around 
 
 To view favorites, please navigate to the Favorites Page of the app (<code>/favorites</code>).
 
-1. The events that the user chose to mark as their favorites will appear here.
+1. The events that the user chose to mark as their favorites will appear here. When the user launches the app for the first time, the list would be empty.
 2. This information will be retained even if the user closes the Tab or shutting down browser.
 3. Each event will have basic information like Date, Venue, Genre for the selected events.
 4. The user can also empty out their favorites list by clicking the Trash Icon.
